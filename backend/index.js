@@ -16,7 +16,7 @@ initSocket(server); // 👈 call socket setup here
 
 // === Middleware ===
 app.use(cors({
-  origin: ["http://localhost:1100", "http://10.0.0.6:1100", "http://10.0.0.6:1200", "https://smartdhobi.in", "https://api.smartdhobi.in"],
+  origin: ["http://localhost:1100", "http://localhost:1200", "http://10.0.0.6:1100", "http://10.0.0.6:1200", "https://smartdhobi.in", "https://api.smartdhobi.in"],
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
   credentials: true
 }));
