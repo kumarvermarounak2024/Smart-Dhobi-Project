@@ -19,5 +19,5 @@ COPY . .
 # Expose the port from .env (default: 1100)
 EXPOSE 1100
 
-# Start the application
+# Start the app
 CMD ["npm", "run", "dev"]
