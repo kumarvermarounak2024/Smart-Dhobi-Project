@@ -1,33 +1,23 @@
-# Step 1: Build stage
-FROM node:20 AS builder
+# Base image
+FROM node:20
 
 # Set working directory
 WORKDIR /app
 
-# Copy package.json and install dependencies
+# Copy package files
 COPY package*.json ./
+
+# Install dependencies
 RUN npm install
 
 # Copy project files
 COPY . .
 
-# Build the frontend
-RUN npm run build
+# Install optional global tools if needed (optional)
+# RUN npm install -g nodemon
 
-# Step 2: Production stage to serve static files
-FROM node:20
-
-# Install `serve` to serve the built frontend
-RUN npm install -g serve
-
-# Copy built files from builder stage
-COPY --from=builder /app/dist /app/dist
-
-# Set working directory
-WORKDIR /app
-
-# Expose the port (same as in vite.config.js and IIS URL)
+# Expose the port from .env (default: 1100)
 EXPOSE 1100
 
-# Start the server
-CMD ["serve", "-s", "dist", "-l", "1100"]
+# Start the app
+CMD ["npm", "run", "dev"]
