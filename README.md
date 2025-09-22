@@ -24,37 +24,59 @@ It connects customers with professional dhobis in their area for quick, reliable
 **Frontend:** React, TailwindCSS, Vite  
 **Backend:** Node.js, Express, MongoDB  
 **DevOps & Deployment:**  
-- AWS EC2 (Ubuntu)  
-- Docker  
-- Jenkins (CI/CD)  
-- Nginx (Reverse Proxy)  
-- Git & GitHub (Version Control)  
-- Route53 (DNS Management) with GoDaddy domain  
-- Certbot (SSL HTTPS)  
+- Git & GitHub – Version control
+- AWS IAM – Secure user creation & role-based access 
+- AWS VPC – Isolated virtual private cloud  
+- AWS Subnet – Public subnet for EC2 hosting  
+- AWS Route Table – Configured with internet access rule (0.0.0.0/0 → IGW)  
+- AWS Internet Gateway (IGW) – Internet access for VPC  
+- AWS EC2 (Ubuntu VPS inside VPC) – Hosting environment
+- Jenkins (on EC2) – CI/CD automation
+- Docker (on EC2) – Containerized application deployment
+- Nginx (on EC2) – Reverse proxy & SSL termination
+- Certbot (Let’s Encrypt) – SSL (HTTPS)
+- AWS Route53 – DNS management (GoDaddy domain integration)
+- GoDaddy – Domain provider
 
 ---
 
 ## ⚙️ Deployment Workflow
 
-1. **Code Push to GitHub**  
+1. **IAM User Creation**  
+   - IAM user created with limited permissions.  
+   - Used Access Key & Secret Key for secure AWS operations. 
+
+2. **VPC + Networking Setup**  
+   - Created a VPC. 
+   - Added a Subnet inside the VPC.  
+   - Configured Route Table (0.0.0.0/0 → Internet Gateway).
+   - Attached Internet Gateway (IGW) for public access.
+
+3. **EC2 VPS Setup**  
+   - Launched EC2 instance (Ubuntu) inside the Subnet.  
+   - Installed Jenkins, Docker, and Nginx inside EC2.
+
+4. **Code Push to GitHub**  
    - Developer pushes code to GitHub repository.
 
-2. **CI/CD with Jenkins**  
-   - Jenkins fetches the latest code.  
-   - Runs build and Docker image creation.  
-   - Pushes Docker image to container.  
+5. **CI/CD with Jenkins**
+   - Jenkins pulls the latest code from GitHub.
+   - Builds Docker images & deploys containers.
 
-3. **Docker + Nginx**  
-   - Application runs inside Docker container.  
-   - Nginx is configured as reverse proxy.  
-   - SSL enabled using Let's Encrypt (Certbot).  
+6. **Docker (on EC2 VPS)**
+   - Runs frontend & backend services in containers.
 
-4. **Domain & DNS (GoDaddy + Route53)**  
-   - Domain purchased from GoDaddy.  
-   - Configured with AWS Route53 for DNS.  
-   - A-records point to EC2 public IP.  
+7. **Nginx + Certbot (on EC2 VPS)**
+   - Nginx configured as reverse proxy for Docker containers.
+   - SSL enabled via Certbot (Let’s Encrypt).
+
+8. **Domain & DNS (GoDaddy + Route53)**
+   - Domain purchased from GoDaddy.
+   - Route53 hosted zone configured for DNS.
+   - A-record points to EC2 public IP.
 
 ---
+
 
 ### 🏠 Home Page
 ![Home Page](/frontend/src/assets/screenshot-home.png)
